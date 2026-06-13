@@ -2,7 +2,7 @@ package Grocery.Controller;
 
 import Grocery.DTO.RequestDTO.PurchaseRequestDTO;
 import Grocery.DTO.ResponseDTO.PurchaseResponseDTO;
-import Grocery.PurchaseStatus;
+import Grocery.Enum.PurchaseStatus;
 import Grocery.Services.Service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

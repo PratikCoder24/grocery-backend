@@ -3,7 +3,6 @@ package Grocery.Mapper;
 import Grocery.DTO.ResponseDTO.PurchaseDetailResponseDTO;
 import Grocery.DTO.ResponseDTO.PurchaseResponseDTO;
 import Grocery.Entities.Purchases;
-import Grocery.PurchaseStatus;
 
 import java.util.List;
 

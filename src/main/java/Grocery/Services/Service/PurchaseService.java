@@ -2,7 +2,7 @@ package Grocery.Services.Service;
 
 import Grocery.DTO.RequestDTO.PurchaseRequestDTO;
 import Grocery.DTO.ResponseDTO.PurchaseResponseDTO;
-import Grocery.PurchaseStatus;
+import Grocery.Enum.PurchaseStatus;
 
 import java.util.List;
 

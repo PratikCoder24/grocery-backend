@@ -1,4 +1,4 @@
-package Grocery;
+package Grocery.Enum;
 
 public enum PurchaseStatus {
     PENDING,

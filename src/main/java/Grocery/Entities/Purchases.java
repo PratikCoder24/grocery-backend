@@ -1,6 +1,6 @@
 package Grocery.Entities;
 
-import Grocery.PurchaseStatus;
+import Grocery.Enum.PurchaseStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

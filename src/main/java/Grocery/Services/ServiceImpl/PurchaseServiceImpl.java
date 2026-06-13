@@ -2,12 +2,11 @@ package Grocery.Services.ServiceImpl;
 
 import Grocery.DTO.RequestDTO.PurchaseDetailRequestDTO;
 import Grocery.DTO.RequestDTO.PurchaseRequestDTO;
-import Grocery.DTO.ResponseDTO.PurchaseDetailResponseDTO;
 import Grocery.DTO.ResponseDTO.PurchaseResponseDTO;
 import Grocery.Entities.*;
 import Grocery.Exception.ResourceNotFoundException;
 import Grocery.Mapper.PurchaseMapper;
-import Grocery.PurchaseStatus;
+import Grocery.Enum.PurchaseStatus;
 import Grocery.Repository.InventoryRepository;
 import Grocery.Repository.ProductRepository;
 import Grocery.Repository.PurchaseRepository;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
