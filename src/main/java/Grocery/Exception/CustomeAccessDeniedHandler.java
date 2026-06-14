@@ -20,7 +20,7 @@ public class CustomeAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException accessDeniedException) throws IOException, ServletException {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
-                LocalDateTime.now(),
+                LocalDateTime.now().toString(),
                 HttpServletResponse.SC_FORBIDDEN,
                 "Forbidden",
                 accessDeniedException.getMessage()

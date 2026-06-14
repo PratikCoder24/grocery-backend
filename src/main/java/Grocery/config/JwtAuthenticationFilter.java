@@ -34,6 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             @Nonnull HttpServletResponse response,
             @Nonnull FilterChain filterChain) throws ServletException, IOException {
 
+        if (request.getServletPath().startsWith("/api/v1/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -52,7 +57,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
             if(jwtService.isTokenValid(jwt, userDetails)){
-
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -69,13 +73,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         response.setContentType("application/json");
 
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
-                LocalDateTime.now(),
+                LocalDateTime.now().toString(),
                 HttpServletResponse.SC_UNAUTHORIZED,
                 "Unauthorized",
                 "Invalid or expired JWT token"
         );
 
         new ObjectMapper().writeValue(response.getOutputStream(), errorResponseDTO);
+        return;
     }
         filterChain.doFilter(request, response);
 

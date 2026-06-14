@@ -21,7 +21,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             AuthenticationException authException) throws IOException, ServletException {
 
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
-                LocalDateTime.now(),
+                LocalDateTime.now().toString(),
                 HttpServletResponse.SC_UNAUTHORIZED,
                 "unauthorized",
                 authException.getMessage()
