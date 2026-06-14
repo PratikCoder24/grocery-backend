@@ -8,12 +8,13 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/sale")
+@RequestMapping(path = "/api/v1/sale")
 public class SaleController {
     private final SaleService saleService;
 
@@ -22,6 +23,7 @@ public class SaleController {
         this.saleService = saleService;
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<SaleResponseDTO> createSale(
            @Valid @RequestBody SaleRequestDTO createSale
@@ -30,16 +32,18 @@ public class SaleController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
         List<SaleResponseDTO> responseDTO = saleService.getAllSales();
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/monthly-sales")
     public ResponseEntity<List<MonthlySalesResponseDTO>> getMonthlySales(){
         List<MonthlySalesResponseDTO> responseDTO = saleService.getMonthlySales();
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
 }

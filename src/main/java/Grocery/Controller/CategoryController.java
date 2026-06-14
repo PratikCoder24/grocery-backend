@@ -6,12 +6,13 @@ import Grocery.Services.Service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/category")
+@RequestMapping("/api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -20,12 +21,14 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories(){
        List <CategoryResponseDTO> responseDTO = categoryService.getCategory();
        return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<CategoryResponseDTO> addCategory(
             @Valid @RequestBody CategoryRequestDTO addCategory
@@ -34,6 +37,7 @@ public class CategoryController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<CategoryResponseDTO> updateCategory(
             @PathVariable Long id,
@@ -43,6 +47,7 @@ public class CategoryController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> deleteCategory(@PathVariable Long id){
         CategoryResponseDTO responseDTO = categoryService.deleteCategory(id);

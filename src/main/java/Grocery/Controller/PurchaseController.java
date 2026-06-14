@@ -7,12 +7,13 @@ import Grocery.Services.Service.PurchaseService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/purchase")
+@RequestMapping(path = "/api/v1/purchase")
 public class PurchaseController {
     private final PurchaseService purchaseService;
 
@@ -21,12 +22,14 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<PurchaseResponseDTO>> getAllPurchases(){
         List<PurchaseResponseDTO> responseDTO = purchaseService.getAllPurchases();
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<PurchaseResponseDTO> createPurchase(
             @Valid @RequestBody PurchaseRequestDTO createPurchase
@@ -35,6 +38,7 @@ public class PurchaseController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{id}")
     public ResponseEntity<PurchaseResponseDTO> updateStatus(
             @PathVariable Long id,
