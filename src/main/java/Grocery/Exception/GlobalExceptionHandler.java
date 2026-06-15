@@ -1,5 +1,6 @@
 package Grocery.Exception;
 
+import Grocery.DTO.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,26 +16,41 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException e){
         return new ResponseEntity<>(
-                e.getMessage(),
+               new ErrorResponseDTO(
+                       LocalDateTime.now().toString(),
+                       HttpStatus.NOT_FOUND.value(),
+                       "Not Found",
+                       e.getMessage()
+               ),
                 HttpStatus.NOT_FOUND
         );
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleInsufficientStockException(InsufficientStockException e){
+    public ResponseEntity<ErrorResponseDTO> handleInsufficientStockException(InsufficientStockException e){
         return new ResponseEntity<>(
-                e.getMessage(),
+                new ErrorResponseDTO(
+                        LocalDateTime.now().toString(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        e.getMessage()
+                ),
                 HttpStatus.BAD_REQUEST
         );
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleDuplicateResourceException(DuplicateResourceException e){
+    public ResponseEntity<ErrorResponseDTO> handleDuplicateResourceException(DuplicateResourceException e){
         return new ResponseEntity<>(
-                e.getMessage(),
-                HttpStatus.BAD_REQUEST
+               new ErrorResponseDTO(
+                       LocalDateTime.now().toString(),
+                       HttpStatus.CONFLICT.value(),
+                       "Conflict",
+                       e.getMessage()
+               ),
+                HttpStatus.CONFLICT
         );
     }
 
@@ -58,4 +75,29 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDTO> handleInvalidJson(HttpMessageNotReadableException ex){
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(
+                        LocalDateTime.now().toString(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        "Bad Request",
+                        "Invalid JSON format or missing request body"
+                ),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex){
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(
+                        LocalDateTime.now().toString(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "Internal Server Error",
+                        "Something went wrong.Please try again."
+                ),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
 }
