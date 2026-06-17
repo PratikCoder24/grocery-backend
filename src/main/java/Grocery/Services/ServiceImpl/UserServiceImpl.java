@@ -1,13 +1,17 @@
 package Grocery.Services.ServiceImpl;
 
-import Grocery.Auth.AuthResponseDTO;
+import Grocery.DTO.ResponseDTO.UserResponseDTO;
 import Grocery.Entities.User;
 import Grocery.Enum.Role;
+import Grocery.Mapper.UserMapper;
 import Grocery.Repository.UserRepository;
 import Grocery.Services.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +27,13 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
 
+    }
+
+    @Override
+    public List<UserResponseDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::mapToDTO)
+                .collect(Collectors.toList());
     }
 }

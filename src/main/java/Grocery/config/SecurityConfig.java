@@ -50,7 +50,8 @@ public class SecurityConfig {
                                         "/api/v1/products/**",
                                         "/api/v1/purchase/**",
                                         "/api/v1/supplier/**",
-                                        "/api/v1/promote/{id}/**"
+                                        "/api/v1/promote/{id}/**",
+                                        "/api/v1/users/**"
                                         ).hasRole("ADMIN")
                                 .requestMatchers(
                                         "/api/v1/inventory/**",

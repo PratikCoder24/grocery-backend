@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -85,6 +87,32 @@ public class GlobalExceptionHandler {
                         "Invalid JSON format or missing request body"
                 ),
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAuthenticationException(AuthenticationException ex){
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(
+                        LocalDateTime.now().toString(),
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "Unauthorized",
+                        "Invalid email or password"
+                ),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccessDeniedException(AccessDeniedException ex){
+        return new ResponseEntity<>(
+                new ErrorResponseDTO(
+                        LocalDateTime.now().toString(),
+                        HttpStatus.FORBIDDEN.value(),
+                        "Forbidden",
+                        "You do not have permission to access this resource."
+                ),
+                HttpStatus.FORBIDDEN
         );
     }
 
